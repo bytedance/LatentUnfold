@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Editing images using capabilities of foundational models">
+  <meta name="keywords" content="Flux, Image Editing">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> Flux Already Knows </title>
+
+  <link rel="icon" href="./static/images/icon.png">
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/leaderboard.css">
+
+  <script type="text/javascript" src="static/js/sort-table.js" defer></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/explorer-index.js"></script>
+  <script src="./static/js/question_card.js"></script>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title is-bold">
+            <img src="static/images/icon.png" style="width:1em;vertical-align: middle" alt="Logo"/>
+            <span class="mathvista" style="vertical-align: middle">Flux Already Knows</span>
+            </h1>
+          <h2 class="subtitle is-3 publication-subtitle">
+            Activating Subject-Driven Image Generation without Training
+          </h2>
+        
+          <div class="is-size-5 publication-authors">
+           <span class="author-block">
+            <a href="https://scholar.google.com/citations?user=VeTCSyEAAAAJ&hl=en">Hao Kang</a><sup>*</sup>,</span>
+           <span class="author-block">
+             <a href="https://scholar.google.com/citations?user=ZHZczW8AAAAJ&hl=en">Stathi Fotiadis</a><sup>*</sup>,</span>
+           <span class="author-block">
+             <a href="https://scholar.google.com/citations?hl=en&user=v_D9J7kAAAAJ">Liming Jiang</a>,</span>
+           <span class="author-block">
+             <a href="https://scholar.google.com/citations?user=0TIYjPAAAAAJ&hl=en">Qing Yan</a>,</span>
+           <span class="author-block">
+             <a href="https://scholar.google.com/citations?user=cjIOAycAAAAJ&hl=en">Yumin Jia</a>,</span> 
+           <span class="author-block">
+            <a href="https://scholar.google.com/citations?user=-H18WY8AAAAJ&hl=en">Zichuan Liu</a>,</span><br>
+          <span class="author-block">
+            <a href="https://scholar.google.com/citations?hl=en&user=9y0SUtEAAAAJ">Min Jin Chong</a>,</span>
+          <span class="author-block">
+            <a href="https://scholar.google.com/citations?user=mFC0wp8AAAAJ">Xin Lu</a></span>
+         <div class="is-size-5 publication-authors">
+           <span class="author-block">ByteDance Intelligent Creation</span><br>
+           <span class="author-block"><sup>*</sup>Core Contributor</span><br>
+           <!-- <span class="paper-block"><b style="color:#f41c1c">CVPR 2025 Oral</b> </span> -->
+        </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2411.15738"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href=" https://github.com/bytedance/Latent Unfold"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- SECTION: INTRODUCTION -->
+<section class="hero is-light is-small">
+  <div class="hero-body has-text-centered">
+    <h1 class="title is-1 mathvista">
+      <img src="static/images/icon.png" style="width:1.0em;vertical-align: middle" alt="Logo"/>
+      <span class="mathvista">Introduction</span>
+    </h1>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container" style="margin-bottom: 1vh;">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <p>We propose a <strong>simple yet effective zero-shot framework</strong> for subject-driven image generation using a <strong>vanilla Flux model</strong>. By framing the task as <strong>grid-based image completion</strong> and replicating the subject image(s) in a <strong>mosaic layout</strong>, we activate strong <strong>identity-preserving capabilities</strong>—without any additional data, training, or inference-time fine-tuning. This <strong>“free lunch” approach</strong> is further enhanced by a <strong>cascade attention design</strong> and <strong>meta prompting technique</strong>, boosting fidelity and versatility.</p>
+
+          <p><strong>Experimental results</strong> show that our Latent Unfoldd <strong>outperforms baselines</strong> across multiple metrics in <strong>benchmarks and human preference studies</strong>, with some trade-offs. It supports <strong>diverse edits</strong> such as <strong>logo insertion</strong>, <strong>virtual try-on</strong>, and <strong>subject replacement or insertion</strong>, demonstrating that a <strong>pre-trained text-to-image model</strong> can deliver <strong>high-quality, resource-efficient customization</strong> for downstream applications.</p>
+        </div>        
+      </div>
+    </div>
+</div>
+</section>
+
+<section class="hero is-light is-small">
+  <div class="hero-body has-text-centered">
+    <h1 class="title is-1 mathvista">
+      <img src="static/images/icon.png" style="width:1.0em;vertical-align: middle" alt="Logo"/>
+      <span class="mathvista">Method</span>
+    </h1>
+  </div>
+</section>
+
+<!-- Method -->
+<section class="section">
+  <div class="container">
+      <div class="content is-1 has-text-centered">
+          <img src="static/images/0_teaser.jpg" alt="Teaser image showing Flux Knows concept" width="100%"/>
+          <p class="is-size-6" style="margin-top:0.5em; margin-bottom:2em;"><em>Visual overview of our mosaic-based generation.</em></p>
+      </div>
+      <div class="columns is-centered">
+          <div class="column is-four-fifths">
+              <h2 class="title is-3 has-text-centered" id="Latent Unfold">Our Approach:  <img src="static/images/icon.png" style="width:1.0em;vertical-align: middle" alt="Logo"/>      <span class="mathvista">Latent Unfold</span>
+</h2>
+              <div class="content has-text-justified">
+                  <p>Our method, called <strong>Latent Unfold</strong>, constructs a <em>mosaic-formatted</em> $M \times N$ grid (e.g., $3\times3$) for zero-shot subject-driven generation. One panel is left blank as the target area, while the rest are filled with repeated subject images (as shown conceptually in the teaser and pipeline figures). This design enhances identity consistency.</p>
+                  <p>The reference image is first encoded into a latent code $\bL_{r}$. This code is then tiled into the mosaic latent $\bL$, where the target panel (e.g., top-left) can be initialized with zeros:
+                  $$ \bL \;=\; \begin{pmatrix} \mathbf{0} & \bL_r & \cdots & \bL_r \\ \vdots & \vdots & \ddots & \vdots \\ \bL_r & \bL_r & \cdots & \bL_r \end{pmatrix} $$
+                  This Latent Unfold approach is highly flexible, supporting both single-view and multi-view input subject images by incorporating different perspectives into the mosaic.</p>
+              </div>
+        </div>
+    </div>
+</section>
+
+<!-- Key contributions -->
+<section class="section">
+  <div class="container">
+    <h2 class="title is-3 has-text-centered"> <span class="mathvista">Key Contributions</h2>
+    <div class="columns is-multiline is-centered">
+
+      <div class="column is-one-third">
+        <div class="box has-text-centered">
+          ⚡ <strong>Training-Free</strong><br>
+          No data, no fine-tuning, no inference-time tricks.
+        </div>
+      </div>
+
+      <div class="column is-one-third">
+        <div class="box has-text-centered">
+          🧩 <strong>Mosaic Completion</strong><br>
+          Subject identity emerges from repeated references.
+        </div>
+      </div>
+
+      <div class="column is-one-third">
+        <div class="box has-text-centered">
+          🔍 <strong>Cascade Attention</strong><br>
+          Multi-scale refinement boosts consistency.
+        </div>
+      </div>
+
+      <div class="column is-one-third">
+        <div class="box has-text-centered">
+          🧠 <strong>Meta Prompting</strong><br>
+          Uses LLMs to improve instruction quality.
+        </div>
+      </div>
+
+      <div class="column is-one-third">
+        <div class="box has-text-centered">
+          🧪 <strong>Diverse Editing</strong><br>
+          Subject & logo insertion, virtual try-on, style etc.
+        </div>
+      </div>
+
+      <div class="column is-one-third">
+        <div class="box has-text-centered">
+          📈 <strong>Outperforms Baselines</strong><br>
+          Validated in benchmarks and human studies.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<section class="section pt-0"> 
+  <div class="container">
+        <div class="columns is-centered">
+      <div class="column is-four-fifths">
+
+              <h2 class="title is-3 has-text-centered" style="margin-top:2.5em;" id="mosaiccompletion">Mosaic Image Completion</h2>
+              <div class="content has-text-justified">
+                  <p>Our goal is to edit the target panel within the mosaic while preserving the reference subject images in other panels. We adapt a denoiser-based <strong>completion</strong> pipeline. The key steps are:</p>
+                  <ul>
+                      <li><strong>Noise Level Consistency:</strong> To match the denoiser's expectations, we blend noise into $\bL$ using the FLUX model's noise schedule: $\bL_t = (1 - t)\bx_0 + t\bL$.</li>
+                      <li><strong>Masking:</strong> At each denoising step $t$, the partially denoised latent $\bx_t$ is combined with the noised mosaic $\bL_t$ using a mask $\bm$: $\widehat{\bx}_t = \bm \odot \bx_t + (\mathbf{1} - \bm) \odot \bL_t$. This ensures only the target panel is updated with new content.</li>
+                      <li><strong>Denoising:</strong> The combined latent $\widehat{\bx}_t$, along with the text prompt $\mathbf{p}$, is fed into the T2I denoiser $\mathcal{D}$ to produce $\bx_{t+\Delta t}$.</li>
+                  </ul>
+                  <p>After $T$ steps, decoding $\bx_T$ yields the mosaic image with the target panel newly generated and other panels faithful to the subject reference. This process is summarized below:</p>
+              </div>
+              <div class="content has-text-centered" style="margin-top:1.5em;">
+                          <img src="static/images/2_pipeline.jpg" alt="Mosaic Completion Algorithm"  style="width:100%; border:1px solid #ccc; padding:10px;"/>
+                  <p class="is-size-6" style="margin-top:0.5em;"><em>Latent Unfold Pipeline</em></p>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+</div>
+</section>
+
+<!-- <img src="static/images/edit-000.jpg" style="width:70%; border:1px solid #ccc; padding:10px;"/> -->
+<!-- <img src="static/images/logo-000.jpg" style="width:70%; border:1px solid #ccc; padding:10px;"/> -->
+<!-- <img src="static/images/mosaic_att-000.jpg" style="width:70%; border:1px solid #ccc; padding:10px;"/> -->
+<!-- <img src="static/images/novel2-000.jpg" style="width:70%; border:1px solid #ccc; padding:10px;"/> -->
+<!-- <img src="static/images/qualitative-000.jpg" style="width:70%; border:1px solid #ccc; padding:10px;"/> -->
+<!-- <img src="static/images/sd3-000.jpg" style="width:70%; border:1px solid #ccc; padding:10px;"/> -->
+<!-- <img src="static/images/style-000.jpg" style="width:70%; border:1px solid #ccc; padding:10px;"/> -->
+<!-- <img src="static/images/style2-000.jpg" style="width:70%; border:1px solid #ccc; padding:10px;"/> -->
+<!-- <img src="static/images/user_study_screenshot-000.jpg" style="width:70%; border:1px solid #ccc; padding:10px;"/> -->
+<!-- <img src="static/images/vto-000.jpg" style="width:70%; border:1px solid #ccc; padding:10px;"/>  -->
+
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3 has-text-centered" id="cascadeattention">Enhancing Details with Cascade Attention</h2>
+        <div class="content has-text-justified">
+            <p>To further improve detail preservation and consistency, especially when the model needs to attend to features across multiple reference panels, we introduce <strong>Cascade Attention</strong>. This mechanism allows the model to capture subject information at multiple scales.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-vcentered is-desktop is-centered" style="margin-top:1.5em; margin-bottom:2.5em;">
+      <div class="column is-half-desktop">
+        <figure class="image">
+          <img src="static/images/4_cascade_attention.jpg" alt="Cascade Attention Visualization" style="border: 0px solid #ddd; display: block; margin-left: auto; margin-right: auto; max-width: 80%;"/>
+        </figure>
+        <p class="is-size-6 has-text-centered" style="margin-top:0.5em;"><em>Attention visualization with and without Cascade Attention.<br> Note the improved detail on the toy's teeth and belly.</em></p>
+      </div>
+      <div class="column is-5-desktop"> 
+        <video width="100%" controls poster="static/videos/06_attention_video.png" 
+               style="display: block; width: 80%; height: auto; aspect-ratio: 4 / 4; /* ADJUST THIS! Example: 1280 / 720 or 4 / 3 */">
+          <source src="static/videos/06_attention_video.mp4" type="video/mp4">
+          Your browser does not support the video tag. Please <a href="static/videos/06_attention_video.mp4">download the video</a> to watch.
+        </video>
+        <p class="is-size-6 has-text-centered" style="margin-top:0.5em;"><em>Video demonstrating the Cascade Attention mechanism.</em></p>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+            <p>We construct pooled (downsampled) versions of the queries ($\mathbf{Q}_i$) and keys ($\mathbf{K}_i$). The attention score maps from these pooled versions ($\mathbf{S}_i^P$) are upsampled and aggregated with the original fine-scale score map ($\mathbf{S}_1^U$):
+            $$ \mathbf{S} = \operatorname{softmax} \left( \mathbf{S}_1^U + \sum_{i=2}^{I} \left(\mathbf{S}_i^U\left[Q_{\mathrm{tgt}},K_{\mathrm{ref}}\right]\right) \right) $$
+            This "coarse-to-fine" feedback strengthens subject identity representation and refines details, resulting in sharper and more faithful generations. The added computational cost is minimal.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3 has-text-centered" id="metaprompting">Improving Guidance with Meta Prompting</h2>
+        <div class="content has-text-justified">
+            <p>Effective prompting is key for T2I models. We employ <strong>Meta Prompting</strong>, using an MLLM (e.g., GPT-4o) to translate a user's intent and reference image(s) into detailed and effective prompts for the FLUX model. The MLLM takes a "meta-prompt" and the subject image as input and outputs one or more tailored prompts for generation.</p>
+        </div>
+        <div class="box" style="background-color: #f0fff0; border-left: 5px solid #48c774; margin-top:2em; margin-bottom:2em; padding:1.5em;">
+            <h4 class="title is-5" style="color:#257942;">Meta-Prompt Example</h4>
+            <pre style="white-space: pre-wrap; font-size: 0.8em; background-color: transparent; padding:0;"><code>When given an image, you make a mosaic image consisting of a 2x2 grid of sub-images showing the exact same subject, describe each sub-image's appearance sequentially from top-left to bottom-right. Limit each description to 30 words. Describe details especially unique appearance like logos, colors, textures, shape, structure and material that can recreate the subject. Refrain from any speculative or guesswork.
+
+Output Format Example:
+{
+  "row1": {
+    "image1": "features the front view of this alarm clock.",
+    "image2": "features the side view of this item."
+  },
+  "row2": {
+    "image1": "features the top view of this alarm clock.",
+    "image2": "features the angled side view of this item."
+  },
+  "summary": "This set of four images showcases a same alarm clock, captured from various perspectives to highlight its unique features and design."
+}
+
+For content in summary: it should starts with "This set of full-frame photos captures an identical subject" and include "firmly positioned in the real scene".</code></pre>
+        </div>
+        <div class="content has-text-justified">
+           <p>This approach significantly enhances the model's ability to follow nuanced instructions and accurately reflect desired attributes in the generated image.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<section class="hero is-light is-small">
+  <div class="hero-body has-text-centered">
+  <h1 class="title is-1 mathvista">
+    <img src="static/images/icon.png" style="width:1.0em;vertical-align: middle" alt="Logo"/>
+            <span class="mathvista">Evaluation</span>
+  </h1>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <p>We conducted a comprehensive set of experiments to evaluate <strong>LatentUnfold</strong>. Our evaluation includes performance on standard benchmarks against state-of-the-art methods, human preference studies, detailed ablation analyses of our components, and qualitative demonstrations of various applications.</p>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="columns is-centered mt-6"> 
+      <div class="column is-four-fifths">
+        <h2 class="title is-3 has-text-centered">Dreambooth Benchmark</h2>
+        <div class="content has-text-justified">
+          <p>We compared LatentUnfold with methods categorized as 'Extra Params', 'Extra Data', and 'All-free' (our category). The results, presented in Table 1, show that despite requiring no extra training or specialized data, LatentUnfold achieves competitive performance and outperforms other 'All-free' methods, highlighting its efficiency and effectiveness.</p>
+        </div>
+        <div class="content has-text-centered mt-5 mb-5"> 
+            <img src="static/images/07_res_tab_dreambooth.png" alt="Table 1: Baseline Comparison Quantitative Results" style="width:100%; max-width: 800px; border: 0px solid #ddd;"/>
+            <p class="is-size-6" style="margin-top:0.5em;"><em>Table 1: Comparison with state-of-the-art methods.</em></p>
+        </div>
+
+        <div class="columns is-desktop is-centered"> 
+            <div class="column has-text-centered">
+                    <img src="static/images/16_res_dreambooth.jpg" alt="Result from DreamBooth Benchmark" style="width:100%; border: 0px solid #ddd;">
+                <p class="is-size-6"><em>Qualitative example from the DreamBooth benchmark evaluation.</em></p>
+            </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered mt-6"> 
+      <div class="column is-four-fifths">
+        <h2 class="title is-3 has-text-centered">Human Preference Study</h2>
+        <div class="content has-text-justified">
+          <p>Recognizing the limitations of numerical metrics, we conducted a human preference study comparing LatentUnfold against OmniControl and Diptych (re-implemented). With 1500 responses, our method was favored for subject identity preservation and overall image quality, and performed comparably or better in text alignment, as detailed in Table 2. This suggests our mosaic conditioning and Cascade Attention effectively enhance perceptual quality.</p>
+        </div>
+        <div class="content has-text-centered mt-5 mb-5"> 
+            <img src="static/images/08_res_tab_hps.png" alt="Table 2: Human Preference Study Results" style="width:100%; max-width: 800px; border: 0px solid #ddd;"/>
+            <p class="is-size-6" style="margin-top:0.5em;"><em>Table 2: Human preference comparison.</em></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered mt-6"> 
+      <div class="column is-four-fifths">
+        <h2 class="title is-3 has-text-centered">Ablation Studies</h2>
+        <div class="content has-text-justified">
+          <p>To understand the impact of different components, we performed ablation studies (Table 3) investigating mosaic grid shape, background removal (BGRM), Cascade Attention, and Meta Prompting. Key findings include: the $3 \times 3$ grid performs well; background removal aids text alignment; Cascade Attention significantly improves identity preservation; and Meta Prompting further boosts identity, with a slight trade-off in text alignment.</p>
+        </div>
+        <div class="content has-text-centered mt-5 mb-5"> 
+            <img src="static/images/09_res_tab_ablation.png" alt="Table 3: Ablation Study Results" style="width:100%; max-width: 700px; border: 0px solid #ddd;"/>
+            <p class="is-size-6" style="margin-top:0.5em;"><em>Table 3: Ablation studies on method components.</em></p>
+        </div>
+      </div>
+    </div>
+
+<div class="mt-6"> 
+      <h2 class="title is-3 has-text-centered">Applications Showcase</h2>
+      <div class="content has-text-justified columns is-centered">
+        <div class="column is-four-fifths">
+           <p>LatentUnfold supports a variety of applications, demonstrating its versatility and robustness in preserving subject identity across diverse scenarios and prompts. The following examples showcase its capabilities in different tasks.</p>
+        </div>
+      </div>
+
+      <div class="columns is-centered mt-4"> 
+        <div class="column is-full has-text-centered content">
+          <div id="all-applications-carousel" class="carousel results-carousel">
+
+            <div class="item has-text-centered">
+              <h5 class="title is-4" style="margin-bottom: 0.5em;">Subject Replacement</h5>
+              <img src="static/images/10_res_swap.jpg" alt="Subject Replacement Example" style="max-width:90%; margin:auto; border: 0px solid #eee;"/>
+            </div>
+
+            <div class="item has-text-centered">
+              <h5 class="title is-4" style="margin-bottom: 0.5em;">Subject Insertion</h5>
+              <img src="static/images/14_res_insertion.jpg" alt="Subject Insertion Example" style="max-width:90%; margin:auto; border: 0px solid #eee;"/>
+            </div>
+
+            <div class="item has-text-centered">
+              <h5 class="title is-4" style="margin-bottom: 0.5em;">Virtual Try-On</h5>
+              <img src="static/images/21_res_vto.jpg" alt="Virtual Try-On Example" style="max-width:90%; margin:auto; border: 0px solid #eee;"/>
+            </div>
+            
+            <div class="item has-text-centered">
+              <h5 class="title is-4" style="margin-bottom: 0.5em;">Logo Insertion</h5>
+              <img src="static/images/12_res_logo.jpg" alt="Logo Insertion Example" style="max-width:80%; margin:auto; border: 0px solid #eee;"/>
+            </div>
+
+            <div class="item has-text-centered">
+              <h5 class="title is-4" style="margin-bottom: 0.5em;">Style Transfer</h5>
+              <img src="static/images/18_res_style_1.jpg" alt="Style-focused Generation Example 1" style="max-width:80%; margin:auto; border: 0px solid #eee;"/>
+            </div> 
+
+            <div class="item has-text-centered">
+              <h5 class="title is-4" style="margin-bottom: 0.5em;">Style Transfer</h5>
+              <img src="static/images/18_res_style_2.jpg" alt="Style-focused Generation Example 2" style="max-width:90%; margin:auto; border: 0px solid #eee;"/>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </div> 
+  
+<div class="mt-6"> 
+      <h2 class="title is-3 has-text-centered">
+      <span class="mathvista">Stable Diffusion 3</span> Also Knows
+    </h2>
+
+    <div class="columns is-centered">
+    <div class="column is-full-desktop has-text-centered">
+                <div class="content">
+          <p class="is-size-6">
+            <em>
+              Stable Diffusion 3 can leverages the same $3 \times 3$ LatentUnfold mosaic—no extra data, no fine-tuning—yet still effectively preserves subject identity.
+            </em>
+          </p>
+        </div>
+
+            <div class="item has-text-centered">
+          <img src="static/images/20_res_sd3.jpg" alt="Mosaic completion example with Stable Diffusion 3"  style="max-width:50%"/>
+            </div> 
+            </div> 
+
+
+      </div>
+      </div>
+    </div>
+
+
+  </div>
+</section>
+
+
+    <!-- BIBTEX -->
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title is-3 has-text-centered">BibTeX</h2>
+    If you use our work, please cite it as follows:
+    <pre><code>
+@article{kang2025Latent Unfold,
+      title={Flux Already Knows - Activating Subject-Driven Image Generation without Training}, 
+      author={Hao Kang and Stathi Fotiadis and Liming Jiang and Qing Yan and Yumin Jia and Zichuan Liu and Min Jin Chong and Xin Lu},
+      year={2025},
+      url={https://arxiv.org/abs/2504.11478}, 
+}
+    </code></pre>
+  </div>
+</section>
+
+
+
+<footer class="footer">
+    <div class="content has-text-centered">
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+<p style="font-size: 14px;">
+  This website is adapted from <a href="https://nerfies.github.io/">Nerfies</a> and <a href="https://dcd-anyedit.github.io/">Latent Unfold</a>, licensed under a <a rel="license"
+href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+</p>
+        </div>
+      </div>
+    </div>
+</footer>
+
+</body>
+</html>
