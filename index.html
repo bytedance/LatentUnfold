@@ -27,6 +27,23 @@
   <script src="./static/js/bulma-slider.min.js"></script>
   <script src="./static/js/explorer-index.js"></script>
   <script src="./static/js/question_card.js"></script>
+
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true
+    },
+    svg: {
+      fontCache: 'global'
+    }
+  };
+  </script>
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+  </script>
+
 </head>
 <body>
 
@@ -144,8 +161,8 @@
 </h2>
               <div class="content has-text-justified">
                   <p>Our method, called <strong>Latent Unfold</strong>, constructs a <em>mosaic-formatted</em> $M \times N$ grid (e.g., $3\times3$) for zero-shot subject-driven generation. One panel is left blank as the target area, while the rest are filled with repeated subject images (as shown conceptually in the teaser and pipeline figures). This design enhances identity consistency.</p>
-                  <p>The reference image is first encoded into a latent code $\bL_{r}$. This code is then tiled into the mosaic latent $\bL$, where the target panel (e.g., top-left) can be initialized with zeros:
-                  $$ \bL \;=\; \begin{pmatrix} \mathbf{0} & \bL_r & \cdots & \bL_r \\ \vdots & \vdots & \ddots & \vdots \\ \bL_r & \bL_r & \cdots & \bL_r \end{pmatrix} $$
+                  <p>The reference image is first encoded into a latent code $\mathbf{L}_{r}$. This code is then tiled into the mosaic latent $\mathbf{L}$, where the target panel (e.g., top-left) can be initialized with zeros:
+                  $$ \mathbf{L} \;=\; \begin{pmatrix} \mathbf{0} & \mathbf{L}_r & \cdots & \mathbf{L}_r \\ \vdots & \vdots & \ddots & \vdots \\ \mathbf{L}_r & \mathbf{L}_r & \cdots & \mathbf{L}_r \end{pmatrix} $$
                   This Latent Unfold approach is highly flexible, supporting both single-view and multi-view input subject images by incorporating different perspectives into the mosaic.</p>
               </div>
         </div>
@@ -214,11 +231,11 @@
               <div class="content has-text-justified">
                   <p>Our goal is to edit the target panel within the mosaic while preserving the reference subject images in other panels. We adapt a denoiser-based <strong>completion</strong> pipeline. The key steps are:</p>
                   <ul>
-                      <li><strong>Noise Level Consistency:</strong> To match the denoiser's expectations, we blend noise into $\bL$ using the FLUX model's noise schedule: $\bL_t = (1 - t)\bx_0 + t\bL$.</li>
-                      <li><strong>Masking:</strong> At each denoising step $t$, the partially denoised latent $\bx_t$ is combined with the noised mosaic $\bL_t$ using a mask $\bm$: $\widehat{\bx}_t = \bm \odot \bx_t + (\mathbf{1} - \bm) \odot \bL_t$. This ensures only the target panel is updated with new content.</li>
-                      <li><strong>Denoising:</strong> The combined latent $\widehat{\bx}_t$, along with the text prompt $\mathbf{p}$, is fed into the T2I denoiser $\mathcal{D}$ to produce $\bx_{t+\Delta t}$.</li>
+                      <li><strong>Noise Level Consistency:</strong> To match the denoiser's expectations, we blend noise into $\mathbf{L}$ using the FLUX model's noise schedule: $\mathbf{L}_t = (1 - t)\mathbf{x}_0 + t\mathbf{L}$.</li>
+                      <li><strong>Masking:</strong> At each denoising step $t$, the partially denoised latent $\mathbf{x}_t$ is combined with the noised mosaic $\mathbf{L}_t$ using a mask $\mathbf{m}$: $\widehat{\mathbf{x}}_t = \mathbf{m} \odot \mathbf{x}_t + (\mathbf{1} - \mathbf{m}) \odot \mathbf{L}_t$. This ensures only the target panel is updated with new content.</li>
+                      <li><strong>Denoising:</strong> The combined latent $\widehat{\mathbf{x}}_t$, along with the text prompt $\mathbf{p}$, is fed into the T2I denoiser $\mathcal{D}$ to produce $\mathbf{x}_{t+\Delta t}$.</li>
                   </ul>
-                  <p>After $T$ steps, decoding $\bx_T$ yields the mosaic image with the target panel newly generated and other panels faithful to the subject reference. This process is summarized below:</p>
+                  <p>After $T$ steps, decoding $\mathbf{x}_T$ yields the mosaic image with the target panel newly generated and other panels faithful to the subject reference. This process is summarized below:</p>
               </div>
               <div class="content has-text-centered" style="margin-top:1.5em;">
                           <img src="static/images/2_pipeline.jpg" alt="Mosaic Completion Algorithm"  style="width:100%; border:1px solid #ccc; padding:10px;"/>
@@ -293,22 +310,31 @@
         </div>
         <div class="box" style="background-color: #f0fff0; border-left: 5px solid #48c774; margin-top:2em; margin-bottom:2em; padding:1.5em;">
             <h4 class="title is-5" style="color:#257942;">Meta-Prompt Example</h4>
-            <pre style="white-space: pre-wrap; font-size: 0.8em; background-color: transparent; padding:0;"><code>When given an image, you make a mosaic image consisting of a 2x2 grid of sub-images showing the exact same subject, describe each sub-image's appearance sequentially from top-left to bottom-right. Limit each description to 30 words. Describe details especially unique appearance like logos, colors, textures, shape, structure and material that can recreate the subject. Refrain from any speculative or guesswork.
+            <pre style="white-space: pre-wrap; font-size: 0.8em; background-color: transparent; padding:0;"><code>When given an image, you make a mosaic image consisting of a 3x3 grid of sub-images showing the exact same subject, describe each sub-image's appearance sequentially from top-left to bottom-right. Limit each description to 30 words. Describe details especially unique appearance like logos, colors, textures, shape, structure and material that can recreate the subject. Refrain from any speculative or guesswork.
 
 Output Format Example:
 {
-  "row1": {
-    "image1": "features the front view of this alarm clock.",
-    "image2": "features the side view of this item."
-  },
-  "row2": {
-    "image1": "features the top view of this alarm clock.",
-    "image2": "features the angled side view of this item."
-  },
-  "summary": "This set of four images showcases a same alarm clock, captured from various perspectives to highlight its unique features and design."
+    "row1": {
+        "image1": "highlights the sneaker's white laces and textured sole, emphasizing its casual style.",
+        "image2": "captures the sneaker's unique color combination and material texture from a slightly angled view.",
+        "image3": "displays a close-up of the sneaker's mint green and lavender panels, focusing on the stitching details."
+    },
+    "row2": {
+        "image1": "presents the sneaker's side, showing the yellow stripe and layered design elements.",
+        "image2": "showcases the sneaker's rounded toe and smooth material finish, highlighting its modern aesthetic.",
+        "image3": "features the sneaker's interior lining and padded collar, emphasizing comfort and design."
+    },
+    "row3": {
+        "image1": "focuses on the sneaker's sole pattern and grip, showcasing its practical features.",
+        "image2": "captures the sneaker's overall shape and color scheme, providing a comprehensive view.",
+        "image3": "features the structure and texture of the subject."
+    },
+    "summary": "This set of full-frame photos captures an identical pastel-colored sneaker subject firmly positioned in the real scene, highlighting its unique design, color scheme, and material details from various perspectives (cinematic, epic, 4K, high quality)."
 }
 
-For content in summary: it should starts with "This set of full-frame photos captures an identical subject" and include "firmly positioned in the real scene".</code></pre>
+For content in summary: it should starts with "This set of full-frame photos captures an identical xxx subject" and include "firmly positioned in the real scene".
+
+</code></pre>
         </div>
         <div class="content has-text-justified">
            <p>This approach significantly enhances the model's ability to follow nuanced instructions and accurately reflect desired attributes in the generated image.</p>
@@ -381,7 +407,7 @@ For content in summary: it should starts with "This set of full-frame photos cap
       <div class="column is-four-fifths">
         <h2 class="title is-3 has-text-centered">Ablation Studies</h2>
         <div class="content has-text-justified">
-          <p>To understand the impact of different components, we performed ablation studies (Table 3) investigating mosaic grid shape, background removal (BGRM), Cascade Attention, and Meta Prompting. Key findings include: the $3 \times 3$ grid performs well; background removal aids text alignment; Cascade Attention significantly improves identity preservation; and Meta Prompting further boosts identity, with a slight trade-off in text alignment.</p>
+          <p>To understand the impact of different components, we performed ablation studies (Table 3) investigating mosaic grid shape, background removal (BGRM), Cascade Attention, and Meta Prompting. Key findings include: the 3x3 grid performs well; background removal aids text alignment; Cascade Attention significantly improves identity preservation; and Meta Prompting further boosts identity, with a slight trade-off in text alignment.</p>
         </div>
         <div class="content has-text-centered mt-5 mb-5"> 
             <img src="static/images/09_res_tab_ablation.png" alt="Table 3: Ablation Study Results" style="width:100%; max-width: 700px; border: 0px solid #ddd;"/>
@@ -403,13 +429,13 @@ For content in summary: it should starts with "This set of full-frame photos cap
           <div id="all-applications-carousel" class="carousel results-carousel">
 
             <div class="item has-text-centered">
-              <h5 class="title is-4" style="margin-bottom: 0.5em;">Subject Replacement</h5>
-              <img src="static/images/10_res_swap.jpg" alt="Subject Replacement Example" style="max-width:90%; margin:auto; border: 0px solid #eee;"/>
+              <h5 class="title is-4" style="margin-bottom: 0.5em;">Subject Replacement & Insertion</h5>
+              <img src="static/images/10_res_swap.jpg" alt="Subject Insertion and Replacement Example" style="max-width:90%; margin:auto; border: 0px solid #eee;"/>
             </div>
 
             <div class="item has-text-centered">
-              <h5 class="title is-4" style="margin-bottom: 0.5em;">Subject Insertion</h5>
-              <img src="static/images/14_res_insertion.jpg" alt="Subject Insertion Example" style="max-width:90%; margin:auto; border: 0px solid #eee;"/>
+              <h5 class="title is-4" style="margin-bottom: 0.5em;">Subject-Driven Generation</h5>
+              <img src="static/images/14_res_insertion.jpg" alt="Subject-Driven Generation Example" style="max-width:90%; margin:auto; border: 0px solid #eee;"/>
             </div>
 
             <div class="item has-text-centered">
