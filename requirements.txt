@@ -1,8 +1,7 @@
---index-url https://download.pytorch.org/whl/cu121
-torch==2.4.1
+torch==2.4.1 --index-url https://download.pytorch.org/whl/cu121
 torchvision==0.19.1
 xformers==0.0.28.post1
-diffusers
+diffusers==0.32.2
 einops
 transformers
 accelerate
@@ -14,3 +13,4 @@ openai
 tenacity
 pyyaml
 gradio
+protobuf
