@@ -314,7 +314,4 @@ if __name__ == "__main__":
     pipeline = prepare_pipeline(aug_att=aug_att, grid_shape=grid_shape, image_shape=image_shape, cascade=cascade)
 
     demo.queue()
-    local_url, share_url = demo.launch(
-        debug=True,
-        share=True
-    )
+    local_url, share_url = demo.launch()
